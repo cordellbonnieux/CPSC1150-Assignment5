@@ -1,6 +1,8 @@
 import java.util.*;
 import javax.swing.*;
 import java.lang.*;
+import java.util.*;
+import java.io.*;
 /**
  * CPSC 1150 W01
  * Assignment 4 part 2
@@ -10,7 +12,7 @@ import java.lang.*;
  * Description: A classic game of hangman; user guesses a letter and the game keeps score.
  */
 public class SecretPhrase {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         // make a phrase
         String secretPhrase = getPhrase();
@@ -54,38 +56,51 @@ public class SecretPhrase {
      * Selects one of ten random Arnold Schwarzenegger quotes to be used in the game.
      * @return a random quote
      */
-    public static String getPhrase() {
+    public static String getPhrase() throws Exception{
 
-        int choice = (int)(Math.random() * (10 - 1)) + 1;
+        // get file
+        File file = new File("phrases.txt");
 
-        // All phrases are quoted from Arnold Schwarzenegger (from various movies)
+        // scanner obj for the file
+        Scanner scan = new Scanner(file);
 
-        String phrase = "";
+        // number of phrases
+        int max = 0;
 
-        switch(choice) {
-            case 1: phrase = "Consider that a divorce.";
-                break;
-            case 2: phrase = "Let off some steam, Bennet.";
-                break;
-            case 3: phrase = "I eat green berets for breakfast, and right now I'm very hungry.";
-                break;
-            case 4: phrase = "You're Luggage.";
-                break;
-            case 5: phrase = "You are terminated.";
-                break;
-            case 6: phrase = "No sequel for you.";
-                break;
-            case 7: phrase = "Hey, Claudius. You killed my father. Big mistake!";
-                break;
-            case 8: phrase = "Freeze in hell Batman!";
-                break;
-            case 9: phrase = "Hey, Killian! Here is Subzero! Now... Plain zero!";
-                break;
-            case 10: phrase = "See you at the party, Richter.";
-                break;
+        // count the lines
+        while (scan.hasNextLine()) {
+            max++;
+            scan.nextLine();
         }
+        scan.close();
 
-        return phrase;
+        // select a random number line from the file
+        int choice = (int)(Math.random() * (max - 1)) + 1;
+
+        // to hold string from file
+        StringBuilder phrase = new StringBuilder();
+
+        // re-assign scanner
+        scan = new Scanner(file);
+
+        // read a line from file
+        for (int i = 0; i < max; i++) {
+
+            String line = "";
+
+            if (i == choice) {
+
+                line = scan.nextLine();
+                phrase.append(line);
+
+            } else if (scan.hasNextLine())
+                scan.nextLine();
+        }
+        scan.close();
+
+        String phraseS = phrase.toString();
+
+        return phraseS;
     }
 
     /**
