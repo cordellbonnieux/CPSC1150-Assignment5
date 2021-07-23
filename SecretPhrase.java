@@ -15,42 +15,54 @@ public class SecretPhrase {
     public static void main(String[] args) throws Exception {
 
         // welcome screen, how many rounds?
-        int rounds = getRounds();
+        int rounds = getRounds(); //do something
 
-        // make a phrase
-        String secretPhrase = getPhrase();
+        // 2D array to store round info
+        String[][] data = new String[rounds][2];
 
-        // make a hidden phrase version
-        String phrase = scramblePhrase(secretPhrase, scrambleIndex(secretPhrase, spaces(secretPhrase)));
+        for (int i = 0; i < rounds; i ++) {
 
-        // triggers when phrase == secret phrase
-        Boolean complete = false;
+            String secretPhrase = getPhrase(data);
 
-        // round counter
-        int counter = 1;
+            // make a hidden phrase version
+            String phrase = scramblePhrase(secretPhrase, scrambleIndex(secretPhrase, spaces(secretPhrase)));
 
-        while (!complete) {
+            // triggers when phrase == secret phrase
+            Boolean complete = false;
 
-            if (secretPhrase.equals(phrase)) {
+            // round counter
+            int counter = 1;
 
-                complete = true;
+            while (!complete) {
 
-            } else {
-                
-                // read a guess from the user
-                char userGuess = guess(phrase, counter);
+                if (secretPhrase.equals(phrase)) {
 
-                // if guess is valid, update the phrase
-                phrase = checkPhrase(phrase, secretPhrase, userGuess);
+                    complete = true;
 
-                // count the rounds
-                counter++;  
+                } else {
+                    
+                    // read a guess from the user
+                    char userGuess = guess(phrase, counter);
 
+                    // if guess is valid, update the phrase
+                    phrase = checkPhrase(phrase, secretPhrase, userGuess);
+
+                    // count the rounds
+                    counter++;  
+
+                }
             }
-        }
 
-        // calculate and display user score
-        printSummary(secretPhrase, counter);
+            // calculate and display user score
+            printSummary(secretPhrase, counter);
+
+            // add the score to the score keeping array
+            data[i][0] = secretPhrase;
+
+            double score = secretPhrase.length() / counter;
+            data[i][1] = Double.toString(score); 
+
+        }
 
         System.exit(0);
     }
@@ -59,7 +71,7 @@ public class SecretPhrase {
      * Selects one of ten random Arnold Schwarzenegger quotes to be used in the game.
      * @return a random quote
      */
-    public static String getPhrase() throws Exception{
+    public static String getPhrase(String[][] data) throws Exception{
 
         // get file
         File file = new File("phrases.txt");
@@ -103,6 +115,14 @@ public class SecretPhrase {
 
         String phraseS = phrase.toString();
 
+        // only make duplicate lines if the user wants to play more rounds than there are lines
+        for (int i = 0; i < data.length; i++) {
+            if (max < data.length && i >= max)
+                return phraseS;
+            else if (data[i][0] == phraseS)
+                return getPhrase(data);
+        }
+
         return phraseS;
     }
 
@@ -128,7 +148,9 @@ public class SecretPhrase {
         quoteP.add(quote);
         box.add(quoteP);
 
-        char guess = JOptionPane.showInputDialog(null, box).charAt(0);
+        String input = JOptionPane.showInputDialog(null, box);
+        char guess = (input.length() > 0) ? input.charAt(0) : ' ';
+         
 
         // make sure guess is not a number
         Boolean isDigit = Character.isDigit(guess);
