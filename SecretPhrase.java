@@ -14,6 +14,9 @@ import java.io.*;
 public class SecretPhrase {
     public static void main(String[] args) throws Exception {
 
+        // welcome screen, how many rounds?
+        int rounds = getRounds();
+
         // make a phrase
         String secretPhrase = getPhrase();
 
@@ -338,5 +341,27 @@ public class SecretPhrase {
         summary.add(resultsP);
         
         JOptionPane.showMessageDialog(null, summary);
+    }
+
+    /**
+     * Reads the number of rounds from the user, if invalid the method calls again
+     * @return and integer that represents the number of game rounds 
+     */
+    public static int getRounds() {
+
+        String selection = JOptionPane.showInputDialog(null, "Enter the number(integer) of rounds you'd like to play.");
+
+        try {
+
+            int num = Integer.parseInt(selection);
+            return num;
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(null, "Error: couldn't read your number, try again.");
+            return getRounds();
+
+        }
+
     }
 }
