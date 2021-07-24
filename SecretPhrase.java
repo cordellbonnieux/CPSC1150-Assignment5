@@ -15,13 +15,14 @@ public class SecretPhrase {
     public static void main(String[] args) throws Exception {
 
         // welcome screen, how many rounds?
-        int rounds = getRounds(); //do something
+        int rounds = getRounds();
 
         // 2D array to store round info
         String[][] data = new String[rounds][2];
 
-        for (int i = 0; i < rounds; i ++) {
+        for (int i = 0; i < rounds; i++) {
 
+            // get a phrase
             String secretPhrase = getPhrase(data);
 
             // make a hidden phrase version
@@ -53,16 +54,19 @@ public class SecretPhrase {
                 }
             }
 
-            // calculate and display user score
+            // calculate and display user score for the match
             printSummary(secretPhrase, counter);
 
-            // add the score to the score keeping array
+            // add the score and phrase to the score keeping array
             data[i][0] = secretPhrase;
 
             double score = secretPhrase.length() / counter;
             data[i][1] = Double.toString(score); 
 
         }
+
+        // print the summary of the game
+        printGameSummary(data);
 
         System.exit(0);
     }
@@ -385,5 +389,45 @@ public class SecretPhrase {
 
         }
 
+    }
+
+    public static void printGameSummary(String[][] data) {
+
+
+        /// this method needs work!
+
+        // create a display panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+
+        // create a heading
+        JLabel header = new JLabel(String.format("Round         Target Phrase       Score"));
+        JPanel topRow = new JPanel();
+        topRow.add(header);
+        panel.add(topRow);
+
+        Double total = 0.0;
+
+        // add each game
+        for (int i = 0; i < data.length; i++) {
+            total += Double.valueOf(data[i][1]);
+            JPanel y = new JPanel();
+
+            // here!!!
+            
+            JLabel x = new JLabel(String.format("%-2d %-s %-2.2f", (i+1), data[i][0], Double.valueOf(data[i][1])));
+            y.add(x);
+            panel.add(y);
+        }
+
+        System.out.println(total);
+
+        // add the average score across all games
+        JLabel avg = new JLabel("Your average score is " + (total / data.length));
+        JPanel bottomRow = new JPanel();
+        bottomRow.add(avg);
+        panel.add(bottomRow);
+
+        // print the summary of the entire game here 
     }
 }
