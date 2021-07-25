@@ -392,8 +392,7 @@ public class SecretPhrase {
     }
 
     public static void printGameSummary(String[][] data) {
-
-
+        
         /// this method needs work!
 
         // create a display panel
@@ -401,21 +400,20 @@ public class SecretPhrase {
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
 
         // create a heading
-        JLabel header = new JLabel(String.format("Round         Target Phrase       Score"));
+        JLabel header = new JLabel(String.format("%-5s %-75s %-5s", "Round", "Target Phrase", "Score"));
         JPanel topRow = new JPanel();
         topRow.add(header);
         panel.add(topRow);
 
         Double total = 0.0;
 
-        // add each game
+        // add each game summary
         for (int i = 0; i < data.length; i++) {
             total += Double.valueOf(data[i][1]);
             JPanel y = new JPanel();
-
-            // here!!!
-            
-            JLabel x = new JLabel(String.format("%-2d %-s %-2.2f", (i+1), data[i][0], Double.valueOf(data[i][1])));
+            while (data[i][0].length() < 75)
+                data[i][0] += " ";
+            JLabel x = new JLabel(String.format("%-2d %-75s %-2.2f", (i+1), data[i][0], Double.valueOf(data[i][1])));
             y.add(x);
             panel.add(y);
         }
@@ -429,5 +427,6 @@ public class SecretPhrase {
         panel.add(bottomRow);
 
         // print the summary of the entire game here 
+        JOptionPane.showMessageDialog(null, panel);
     }
 }
