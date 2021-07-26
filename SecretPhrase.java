@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.lang.*;
 import java.util.*;
 import java.io.*;
+import java.awt.BorderLayout;
 /**
  * CPSC 1150 W01
  * Assignment 4 part 2
@@ -18,7 +19,7 @@ public class SecretPhrase {
         int rounds = getRounds();
 
         // 2D array to store round info
-        String[][] data = new String[rounds][2];
+        String[][] data = new String[rounds][3];
 
         for (int i = 0; i < rounds; i++) {
 
@@ -58,10 +59,12 @@ public class SecretPhrase {
             printSummary(secretPhrase, counter);
 
             // add the score and phrase to the score keeping array
-            data[i][0] = secretPhrase;
+            data[i][0] = (i < 9) ? "0" + Integer.toString(i) : Integer.toString(i);
+
+            data[i][1] = secretPhrase;
 
             double score = secretPhrase.length() / counter;
-            data[i][1] = Double.toString(score); 
+            data[i][2] = Double.toString(score); 
 
         }
 
@@ -378,55 +381,42 @@ public class SecretPhrase {
         String selection = JOptionPane.showInputDialog(null, "Enter the number(integer) of rounds you'd like to play.");
 
         try {
-
             int num = Integer.parseInt(selection);
             return num;
 
         } catch (NumberFormatException e) {
-
             JOptionPane.showMessageDialog(null, "Error: couldn't read your number, try again.");
             return getRounds();
 
         }
-
     }
-
+    /**
+     * Prints a summary of all rounds played
+     * @param data a 2D string containing the round number, score and target phrase for each round played.
+     */
     public static void printGameSummary(String[][] data) {
-        
-        /// this method needs work!
 
-        // create a display panel
+        // create panel
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
 
-        // create a heading
-        JLabel header = new JLabel(String.format("%-5s %-75s %-5s", "Round", "Target Phrase", "Score"));
-        JPanel topRow = new JPanel();
-        topRow.add(header);
-        panel.add(topRow);
-
-        Double total = 0.0;
-
-        // add each game summary
-        for (int i = 0; i < data.length; i++) {
-            total += Double.valueOf(data[i][1]);
-            JPanel y = new JPanel();
-            while (data[i][0].length() < 75)
-                data[i][0] += " ";
-            JLabel x = new JLabel(String.format("%-2d %-75s %-2.2f", (i+1), data[i][0], Double.valueOf(data[i][1])));
-            y.add(x);
-            panel.add(y);
+        // sum total scores, then calculate average
+        Double totalScore = 0.0;
+        int i = 0;
+        while (i < data.length) {
+            totalScore += Double.parseDouble(data[i][2]);
+            i++;
         }
+        Double avg = totalScore / i;
+            
+        // Create a table
+        String[] header = {"Round", "Target Phrase", "Score"};
+        JTable table = new JTable(data, header);
+        panel.add(new JScrollPane(table));
 
-        System.out.println(total);
+        JLabel score = new JLabel(String.format("Your average score is %2.2f", avg));
+        panel.add(score);
 
-        // add the average score across all games
-        JLabel avg = new JLabel("Your average score is " + (total / data.length));
-        JPanel bottomRow = new JPanel();
-        bottomRow.add(avg);
-        panel.add(bottomRow);
-
-        // print the summary of the entire game here 
         JOptionPane.showMessageDialog(null, panel);
     }
 }
