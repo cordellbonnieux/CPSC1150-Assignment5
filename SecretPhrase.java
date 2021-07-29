@@ -15,16 +15,21 @@ import java.awt.BorderLayout;
 public class SecretPhrase {
     public static void main(String[] args) throws Exception {
 
-        if (args.length == 2) {
+        //testing
+        for (int i = 0; i < args.length; i++)
+            System.out.println("args[" + i + "] = '" + args[i] + "'");
 
-        } else if (args.length == 3) {
-
+        if (args.length < 2) {
+            System.out.println(" Usage: java SercetPhrase rounds [-l | -f filename] ");
+            System.out.println(" rounds: a positive integer that represents the number of rounds for running program ");
+            System.out.println(" -l: randomly selects the targets from a list of phrases");
+            System.out.println(" -f filename: randomly selects the targets from the filename ");
+            System.exit(1);
         }
 
         // welcome screen, how many rounds?
-        int rounds = (args.length > 1) ? Integer.parseInt(args[0]) : getRounds();
+        int rounds = Integer.parseInt(args[0]); //getRounds();
         
-
         // 2D array to store round info
         String[][] data = new String[rounds][3];
 
@@ -82,16 +87,26 @@ public class SecretPhrase {
     }
 
     /**
-     * Selects one of ten random Arnold Schwarzenegger quotes to be used in the game.
+     * Selects a random quote from a provided file or the original file.
      * @return a random quote
      */
     public static String getPhrase(String[][] data, String[] args) throws Exception{
 
-        // get file
-        File file = (args.length == 3) ? new File(args[2]) : new File("phrases.txt");
+        File file = new File("");
 
-        if (!file.exists()) {
-            System.out.println("Can't read the phrases.txt file");
+        if (args[1].equals("-f") && args.length == 3){
+            String loc = args[2] + ".txt";
+            System.out.println(loc);
+            file = new File(loc);
+        } else if (args[1].equals("-l"))
+            file = new File("phrases.txt");
+        else {
+            System.out.println("Error: Valid command required ('numOfRounds -l' for random quotes or 'numOfRounds -f filename' to use your provided file).");
+            System.exit(0);
+        }
+
+        if (!file.canRead()) {
+            System.out.println("Error: Can't read the phrases file.");
             System.exit(0);
         }
 
