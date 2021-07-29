@@ -15,8 +15,15 @@ import java.awt.BorderLayout;
 public class SecretPhrase {
     public static void main(String[] args) throws Exception {
 
+        if (args.length == 2) {
+
+        } else if (args.length == 3) {
+
+        }
+
         // welcome screen, how many rounds?
-        int rounds = getRounds();
+        int rounds = (args.length > 1) ? Integer.parseInt(args[0]) : getRounds();
+        
 
         // 2D array to store round info
         String[][] data = new String[rounds][3];
@@ -24,7 +31,7 @@ public class SecretPhrase {
         for (int i = 0; i < rounds; i++) {
 
             // get a phrase
-            String secretPhrase = getPhrase(data);
+            String secretPhrase = getPhrase(data, args);
 
             // make a hidden phrase version
             String phrase = scramblePhrase(secretPhrase, scrambleIndex(secretPhrase, spaces(secretPhrase)));
@@ -78,10 +85,15 @@ public class SecretPhrase {
      * Selects one of ten random Arnold Schwarzenegger quotes to be used in the game.
      * @return a random quote
      */
-    public static String getPhrase(String[][] data) throws Exception{
+    public static String getPhrase(String[][] data, String[] args) throws Exception{
 
         // get file
-        File file = new File("phrases.txt");
+        File file = (args.length == 3) ? new File(args[2]) : new File("phrases.txt");
+
+        if (!file.exists()) {
+            System.out.println("Can't read the phrases.txt file");
+            System.exit(0);
+        }
 
         // scanner obj for the file
         Scanner scan = new Scanner(file);
@@ -127,7 +139,7 @@ public class SecretPhrase {
             if (max < data.length && i >= max)
                 return phraseS;
             else if (data[i][0] == phraseS)
-                return getPhrase(data);
+                return getPhrase(data, args);
         }
 
         return phraseS;
