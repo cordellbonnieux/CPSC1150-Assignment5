@@ -20,7 +20,7 @@ public class SecretPhrase {
             System.out.println("args[" + i + "] = '" + args[i] + "'");
 
         if (args.length < 2) {
-            System.out.println(" Usage: java SercetPhrase rounds [-l | -f filename] ");
+            System.out.println(" Usage: java SercetPhrase rounds [-l | -f filename]");
             System.out.println(" rounds: a positive integer that represents the number of rounds for running program ");
             System.out.println(" -l: randomly selects the targets from a list of phrases");
             System.out.println(" -f filename: randomly selects the targets from the filename ");
@@ -95,7 +95,7 @@ public class SecretPhrase {
         File file = new File("");
 
         if (args[1].equals("-f") && args.length == 3){
-            String loc = args[2] + ".txt";
+            String loc = (args[2].contains(".txt")) ? args[2] : args[2] + ".txt";
             System.out.println(loc);
             file = new File(loc);
         } else if (args[1].equals("-l"))

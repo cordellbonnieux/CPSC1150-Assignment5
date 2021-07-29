@@ -1,0 +1,10 @@
+hello
+goodbye
+adios
+bonjour
+salut
+bonne soiree
+bonsoir
+bonne journee
+good day
+hi
