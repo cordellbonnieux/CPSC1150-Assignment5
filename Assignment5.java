@@ -20,11 +20,12 @@ public class Assignment5 {
         System.out.println();
 
         // Exercise #3 
-        String someText = "A B C D"; //"Here is a string used for testing.";
+        String someText = "abcd"; //"Here is a string used for testing.";
         System.out.println("String: " + someText);
         System.out.println("String after: " + reverseDisplay(someText));
         
     }
+
     /**
      * This method takes an array of integers, assigns the integer at index 0 as
      * the pivot. Then, the method rearranges the array with items less than the pivot being before
@@ -61,8 +62,10 @@ public class Assignment5 {
         
         // record the new index of the first pivot
         for (int i = 0; i < list.length; i++)
-            if (list[i] == pivot)
+            if (list[i] == pivot) {
                 index = i;
+                break;
+            }
         
         return index;
     }
