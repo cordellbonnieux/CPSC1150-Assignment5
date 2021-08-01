@@ -15,10 +15,6 @@ import java.awt.BorderLayout;
 public class SecretPhrase {
     public static void main(String[] args) throws Exception {
 
-        //testing
-        for (int i = 0; i < args.length; i++)
-            System.out.println("args[" + i + "] = '" + args[i] + "'");
-
         if (args.length < 2) {
             System.out.println(" Usage: java SercetPhrase rounds [-l | -f filename]");
             System.out.println(" rounds: a positive integer that represents the number of rounds for running program ");
@@ -96,7 +92,6 @@ public class SecretPhrase {
 
         if (args[1].equals("-f") && args.length == 3){
             String loc = (args[2].contains(".txt")) ? args[2] : args[2] + ".txt";
-            System.out.println(loc);
             file = new File(loc);
         } else if (args[1].equals("-l"))
             file = new File("phrases.txt");
