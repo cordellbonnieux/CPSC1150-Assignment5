@@ -58,7 +58,7 @@ public class Assignment5 {
             else if (i <= s + p - 1)
                 list[i] = pivot;
             else if (i > s)
-                    list[i] = larger[i - s - p];
+                list[i] = larger[i - s - p];
         
         // record the new index of the first pivot
         for (int i = 0; i < list.length; i++)
